@@ -1,5 +1,4 @@
 module Mados
-
-greet() = print("Hello World!")
+include("simulator.jl")
 
 end # module Mados
