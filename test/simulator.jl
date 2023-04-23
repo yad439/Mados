@@ -145,4 +145,30 @@ using Mados: Item, Encoding, simulateone, cost_local, cost_central, demand_local
         @test cost_local(result) == 0
         @test cost_central(result) == 0
     end
+    @testset "Several events at one day" begin
+        item = Item(13, 2, [2, 2], [[(2, 5), (4, 10)], [(4, 5)]])
+        policies = Encoding([15, 5, 10, 0, 5])
+
+        result = @inferred simulateone(item, 10, policies)
+
+        @test demand_local(result) == 5 + 10 + 5
+        @test unsatisfied_local(result) == 0
+        @test demand_central(result) == 5 + 10 + 5
+        @test unsatisfied_central(result) == 0
+        @test cost_local(result) == 13 * ((1 * 10 + 2 * 5 + 2 * 0 + 5 * 10) + (3 * 5 + 2 * 0 + 5 * 5))
+        @test cost_central(result) == 13 * (1 * 15 + 2 * 10 + 2 * 0 + 5 * 15)
+    end
+    @testset "Several events at one day 2" begin
+        item = Item(13, 2, [2, 2], [[(2, 3), (2, 2), (4, 5), (4, 5)], [(4, 2), (4, 3)]])
+        policies = Encoding([15, 5, 10, 0, 5])
+
+        result = @inferred simulateone(item, 10, policies)
+
+        @test demand_local(result) == 5 + 10 + 5
+        @test unsatisfied_local(result) == 0
+        @test demand_central(result) == 5 + 10 + 5
+        @test unsatisfied_central(result) == 0
+        @test cost_local(result) == 13 * ((1 * 10 + 2 * 5 + 2 * 0 + 5 * 10) + (3 * 5 + 2 * 0 + 5 * 5))
+        @test cost_central(result) == 13 * (1 * 15 + 2 * 10 + 2 * 0 + 5 * 15)
+    end
 end
