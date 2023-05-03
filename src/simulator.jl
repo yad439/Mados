@@ -4,7 +4,20 @@ include("queues.jl")
 
 using DataStructures
 
-function simulateone(item::Item, period::Int, policies::Encoding)
+function simulateall(instance::Instance, policies::AbstractVector{Encoding})
+    @assert length(policies) == length(instance.items)
+    itemresults = map((item, encoding) -> simulateone(item, instance.period, encoding), instance.items, policies)
+    localcost = sum(cost_local, itemresults)
+    centralcost = sum(cost_central, itemresults)
+    localdemand = sum(demand_local, itemresults)
+    centraldemand = sum(demand_central, itemresults)
+    localsatisfied = sum(satisfied_local, itemresults)
+    centralsatisfied = sum(satisfied_central, itemresults)
+
+    SimulationResult(localcost, centralcost, localdemand, centraldemand, localsatisfied, centralsatisfied)
+end
+
+function simulateone(item::Item, period::Integer, policies::Encoding)
     @assert nlocal(policies) == length(item.local_leadtimes)
     localstocks = policies.encoding[3:2:end]
     centralstock = getrop(policies)
@@ -26,6 +39,7 @@ function simulateone(item::Item, period::Int, policies::Encoding)
     previousdate = 1
     while !isempty(eventqueue)
         date, destination, quantity = popfirst!(eventqueue)
+        @assert quantity ≠ 0
         date ≤ period || break
         if date ≠ previousdate
             localcost += sum(localstocks) * item.cost * (date - previousdate)
