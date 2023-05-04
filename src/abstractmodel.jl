@@ -6,6 +6,36 @@ abstract type AbstractModel end
 function variable_count end
 
 """
+	lowerbounds(model::AbstractModel)::Vector{<:Real}
+"""
+function lowerbounds end
+
+"""
+	upperbounds(model::AbstractModel, index)::Real
+"""
+function upperbounds end
+
+"""
+	upperbounds(model::AbstractModel)::Vector{<:Real}
+"""
+function upperbounds end
+
+"""
+	upperbounds(model::AbstractModel, index)::Real
+"""
+function upperbounds end
+
+"""
+	bounds(model::AbstractModel)::Vector{<:Tuple{<:Real,<:Real}}
+"""
+function bounds end
+
+"""
+	bounds(model::AbstractModel, index)::Tuple{<:Real,<:Real}
+"""
+function bounds end
+
+"""
 	constraint_count(model::AbstractModel)::Int
 """
 function fastconstraint_count end
