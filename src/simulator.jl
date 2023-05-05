@@ -19,6 +19,8 @@ end
 
 function simulateone(item::Item, period::Integer, policies::Encoding)
     @assert nlocal(policies) == length(item.local_leadtimes)
+    @assert length(policies.encoding) == 2length(item.local_leadtimes) + 1
+    @assert all(≥(0), policies.encoding)
     localstocks = policies.encoding[3:2:end]
     centralstock = getrop(policies)
     locallevels = copy(localstocks)
