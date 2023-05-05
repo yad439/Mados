@@ -1,6 +1,6 @@
 module Mados
-include("simulator.jl")
 include("defaultimpls.jl")
 include("modelextensions.jl")
+include("inventorymodel.jl")
 
 end # module Mados

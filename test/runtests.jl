@@ -6,4 +6,5 @@ using Mados
     @testset "Queues" include("queues.jl")
     @testset "Simulator" include("simulator.jl")
     @testset "Model extensions" include("modelextensions.jl")
+    @testset "Inventory model" include("inventorymodel.jl")
 end
