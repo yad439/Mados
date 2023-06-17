@@ -43,7 +43,7 @@ end
     @testset "No orders for some" begin
         result = @test_warn "No orders" (@inferred generateinstance(20, 2, 11, 0.1, 0.5, 0.0, 20.0, 0.5, 0.0, 10:20, 1:9))
 
-        @test length(result.items) < 50
+        @test length(result.items) < 20
         @test result.period == 11
         @test all(item.cost > 0.0 for item ∈ result.items)
         @test all(10 ≤ item.central_leadtime ≤ 20 for item ∈ result.items)
