@@ -8,4 +8,5 @@ using Mados
     @testset "Model extensions" include("modelextensions.jl")
     @testset "Inventory model" include("inventorymodel.jl")
     @testset "Instance generator" include("instancegenerator.jl")
+    @testset "Initial solution" include("initial.jl")
 end
