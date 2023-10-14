@@ -6,10 +6,10 @@ using Mados: _binarysearch
         @test @inferred(_binarysearch(Base.Fix1(getindex, [true, true]), 1, 2)) == 1
         @test @inferred(_binarysearch(Base.Fix1(getindex, [true, true, true]), 1, 3)) == 1
         @test @inferred(_binarysearch(Base.Fix1(getindex, [true, true, true, true]), 1, 4,)) == 1
-        @test @inferred(_binarysearch(Base.Fix1(getindex, [false]), 1, 1)) == 0
-        @test @inferred(_binarysearch(Base.Fix1(getindex, [false, false]), 1, 2)) == 0
-        @test @inferred(_binarysearch(Base.Fix1(getindex, [false, false, false]), 1, 3)) == 0
-        @test @inferred(_binarysearch(Base.Fix1(getindex, [false, false, false, false]), 1, 4)) == 0
+        @test @inferred(_binarysearch(Base.Fix1(getindex, [false]), 1, 1)) == -1
+        @test @inferred(_binarysearch(Base.Fix1(getindex, [false, false]), 1, 2)) == -1
+        @test @inferred(_binarysearch(Base.Fix1(getindex, [false, false, false]), 1, 3)) == -1
+        @test @inferred(_binarysearch(Base.Fix1(getindex, [false, false, false, false]), 1, 4)) == -1
         @test @inferred(_binarysearch(Base.Fix1(getindex, [false, true]), 1, 2)) == 2
         @test @inferred(_binarysearch(Base.Fix1(getindex, [false, true, true]), 1, 3)) == 2
         @test @inferred(_binarysearch(Base.Fix1(getindex, [false, true, true, true]), 1, 4)) == 2

@@ -3,13 +3,13 @@ struct Encoding
 end
 
 getrop(policies::Encoding) = policies.encoding[1]
-getinvmin(policies::Encoding, i::Integer) = policies.encoding[2*i]
-getinvmax(policies::Encoding, i::Integer) = policies.encoding[2*i+1]
+getinvmin(policies::Encoding, i::Integer) = policies.encoding[2i]
+getinvmax(policies::Encoding, i::Integer) = policies.encoding[2i+1]
 nlocal(policies::Encoding) = (length(policies.encoding) - 1) ÷ 2
 
 setrop!(policies::Encoding, value::Integer) = (policies.encoding[1] = value; nothing)
-setinvmin!(policies::Encoding, i::Integer, value::Integer) = (policies.encoding[2*i] = value; nothing)
-setinvmax!(policies::Encoding, i::Integer, value::Integer) = (policies.encoding[2*i+1] = value; nothing)
+setinvmin!(policies::Encoding, i::Integer, value::Integer) = (policies.encoding[2i] = value; nothing)
+setinvmax!(policies::Encoding, i::Integer, value::Integer) = (policies.encoding[2i+1] = value; nothing)
 
 struct SimulationResult
     cost_local::Float64
