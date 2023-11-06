@@ -13,7 +13,7 @@ end
 function testmax(model::AgentModel, encoding::Encoding, index::Integer, value::Integer)::Bool
     previous = getinvmax(encoding, index)
     setinvmax!(encoding, index, value)
-    result = _binarysearch(v -> testmin(model, encoding, index, v), 0, max(value - 1, 0))
+    result = _binarysearch(v -> testmin(model, encoding, index, v), 0, value)
     setinvmax!(encoding, index, previous)
 
     result ≠ -1
@@ -34,7 +34,7 @@ function find_localparams(model::AgentModel, encoding::Encoding, index::Integer)
     if invmax ≠ 0
         previous = getinvmax(encoding, index)
         setinvmax!(encoding, index, invmax)
-        invmin = _binarysearch(v -> testmin(model, encoding, index, v), 0, invmax - 1)
+        invmin = _binarysearch(v -> testmin(model, encoding, index, v), 0, invmax)
         setinvmax!(encoding, index, previous)
     else
         invmin = 0
@@ -51,7 +51,7 @@ function find_feasibleprapameters(model::AgentModel)::Encoding
     encoding = Encoding(zeros(Int16, variable_count(model)))
     setrop!(encoding, sum(model.demands))
     for i = 1:nlocal(encoding)
-        setinvmin!(encoding, i, max(model.demands[i] - 1, 0))
+        setinvmin!(encoding, i, model.demands[i])
         setinvmax!(encoding, i, model.demands[i])
     end
     for i = 1:nlocal(encoding)

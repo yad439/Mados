@@ -21,6 +21,7 @@ function simulateone(item::Item, period::Integer, policies::Encoding)
     @assert nlocal(policies) == length(item.local_leadtimes)
     @assert length(policies.encoding) == 2length(item.local_leadtimes) + 1
     @assert all(≥(0), policies.encoding)
+    @assert all(i -> getinvmin(policies, i) ≤ getinvmax(policies, i), 1:nlocal(policies))
     localstocks = policies.encoding[3:2:end]
     centralstock = getrop(policies)
     locallevels = copy(localstocks)
@@ -77,7 +78,7 @@ function simulateone(item::Item, period::Integer, policies::Encoding)
                 unsatlocal += demand - satisfied
                 localpromises[destination] += demand - satisfied
                 locallevels[destination] -= demand
-                if locallevels[destination] ≤ getinvmin(policies, destination)
+                if locallevels[destination] < getinvmin(policies, destination)
                     replenishment_request = getinvmax(policies, destination) - locallevels[destination]
                     centraldemand += replenishment_request
                     replenishment_count = Int16(min(replenishment_request, centralstock))

@@ -4,7 +4,7 @@ using Mados: Item, Instance, Encoding, simulateone, simulateall, cost_local, cos
 @testset "simulateone" begin
     @testset "Two units, single order at each" begin
         item = Item(13, 3, [10, 11], [[(2, 5)], [(3, 7)]])
-        policies = Encoding([20, 1, 10, 1, 10])
+        policies = Encoding([20, 2, 10, 2, 10])
 
         result = @inferred simulateone(item, 10, policies)
 
@@ -17,7 +17,7 @@ using Mados: Item, Instance, Encoding, simulateone, simulateall, cost_local, cos
     end
     @testset "Single unit, two orders" begin
         item = Item(13, 3, [10], [[(2, 5), (4, 7)]])
-        policies = Encoding([20, 1, 20])
+        policies = Encoding([20, 2, 20])
 
         result = @inferred simulateone(item, 10, policies)
 
@@ -30,7 +30,7 @@ using Mados: Item, Instance, Encoding, simulateone, simulateall, cost_local, cos
     end
     @testset "One order, request to central" begin
         item = Item(13, 3, [4], [[(2, 5)]])
-        policies = Encoding([20, 7, 10])
+        policies = Encoding([20, 8, 10])
 
         result = @inferred simulateone(item, 10, policies)
 
@@ -43,7 +43,7 @@ using Mados: Item, Instance, Encoding, simulateone, simulateall, cost_local, cos
     end
     @testset "Two orders, one partially unsatisfied" begin
         item = Item(13, 3, [4], [[(2, 5), (3, 7)]])
-        policies = Encoding([20, 1, 10])
+        policies = Encoding([20, 2, 10])
 
         result = @inferred simulateone(item, 10, policies)
 
@@ -56,7 +56,7 @@ using Mados: Item, Instance, Encoding, simulateone, simulateall, cost_local, cos
     end
     @testset "Three orders, two requests" begin
         item = Item(13, 3, [4], [[(2, 5), (3, 2), (4, 7)]])
-        policies = Encoding([30, 10, 15])
+        policies = Encoding([30, 11, 15])
 
         result = @inferred simulateone(item, 10, policies)
 
@@ -69,7 +69,7 @@ using Mados: Item, Instance, Encoding, simulateone, simulateall, cost_local, cos
     end
     @testset "Unsatisfied central" begin
         item = Item(13, 3, [4, 2], [[(2, 5)], [(3, 7)]])
-        policies = Encoding([4, 1, 5, 1, 7])
+        policies = Encoding([4, 2, 5, 2, 7])
 
         result = @inferred simulateone(item, 10, policies)
 
@@ -82,7 +82,7 @@ using Mados: Item, Instance, Encoding, simulateone, simulateall, cost_local, cos
     end
     @testset "One at local" begin
         item = Item(13, 3, [2], [[(2, 1), (5, 2)]])
-        policies = Encoding([4, 0, 1])
+        policies = Encoding([4, 1, 1])
 
         result = @inferred simulateone(item, 10, policies)
 
@@ -95,7 +95,7 @@ using Mados: Item, Instance, Encoding, simulateone, simulateall, cost_local, cos
     end
     @testset "One at central" begin
         item = Item(13, 3, [2], [[(2, 1), (3, 2)]])
-        policies = Encoding([1, 0, 1])
+        policies = Encoding([1, 1, 1])
 
         result = @inferred simulateone(item, 10, policies)
 
@@ -121,7 +121,7 @@ using Mados: Item, Instance, Encoding, simulateone, simulateall, cost_local, cos
     end
     @testset "Zero at cental" begin
         item = Item(13, 3, [2], [[(2, 2)]])
-        policies = Encoding([0, 2, 4])
+        policies = Encoding([0, 3, 4])
 
         result = @inferred simulateone(item, 10, policies)
 
@@ -147,7 +147,7 @@ using Mados: Item, Instance, Encoding, simulateone, simulateall, cost_local, cos
     end
     @testset "Several events at one day" begin
         item = Item(13, 2, [2, 2], [[(2, 5), (4, 10)], [(4, 5)]])
-        policies = Encoding([15, 5, 10, 0, 5])
+        policies = Encoding([15, 6, 10, 1, 5])
 
         result = @inferred simulateone(item, 10, policies)
 
@@ -160,7 +160,7 @@ using Mados: Item, Instance, Encoding, simulateone, simulateall, cost_local, cos
     end
     @testset "Several events at one day 2" begin
         item = Item(13, 2, [2, 2], [[(2, 3), (2, 2), (4, 5), (4, 5)], [(4, 2), (4, 3)]])
-        policies = Encoding([15, 5, 10, 0, 5])
+        policies = Encoding([15, 6, 10, 1, 5])
 
         result = @inferred simulateone(item, 10, policies)
 
@@ -175,7 +175,7 @@ end
 @testset "simulateall" begin
     @testset "One item" begin
         item = Item(13, 3, [10], [[(2, 5), (4, 7)]])
-        policies = Encoding([20, 1, 20])
+        policies = Encoding([20, 2, 20])
         instance = Instance([item], 10)
 
         result = @inferred simulateall(instance, [policies])
@@ -196,11 +196,11 @@ end
         items = [item1, item2, item3, item4, item5]
         instance = Instance(items, 10)
 
-        policies1 = Encoding([20, 1, 10, 1, 10])
-        policies2 = Encoding([20, 1, 20])
+        policies1 = Encoding([20, 2, 10, 2, 10])
+        policies2 = Encoding([20, 2, 20])
         policies3 = Encoding([0, 0, 0])
-        policies4 = Encoding([20, 1, 10])
-        policies5 = Encoding([4, 1, 5, 1, 7])
+        policies4 = Encoding([20, 2, 10])
+        policies5 = Encoding([4, 2, 5, 2, 7])
         policies = [policies1, policies2, policies3, policies4, policies5]
 
         result = @inferred simulateall(instance, policies)

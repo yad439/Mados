@@ -25,7 +25,7 @@ agentmodels(model::InventoryModel) =
     [AgentModel(item, model.instance.period, model.target_local, model.target_central) for item in model.instance.items]
 
 variable_count(model::AgentModel) = 2length(model.item.local_leadtimes) + 1
-fastconstraint_count(model::AgentModel) = 2length(model.item.local_leadtimes)
+fastconstraint_count(model::AgentModel) = length(model.item.local_leadtimes)
 slowconstraint_count(model::AgentModel) = 2
 
 lowerbounds(::AgentModel, _)::Int16 = 0
@@ -33,21 +33,10 @@ upperbounds(model::AgentModel, index::Integer)::Int16 = index == 1 ? sum(model.d
 bounds(model::AgentModel, index::Integer) = (lowerbounds(model, index), upperbounds(model, index))
 
 function fastconstraints(::AgentModel, encoding::Encoding, index::Integer)::Int16
-    if !checkindex(Bool, 1:2nlocal(encoding), index)
-        throw(BoundsError(1:2nlocal(encoding), index))
+    if !checkindex(Bool, 1:nlocal(encoding), index)
+        throw(BoundsError(1:nlocal(encoding), index))
     end
-    if index <= nlocal(encoding)
-        if getinvmax(encoding, index) == 0
-            return getinvmin(encoding, index)
-        end
-        return max(0, getinvmin(encoding, index) - getinvmax(encoding, index) + 1)
-    else
-        newindex = index - nlocal(encoding)
-        if getinvmax(encoding, newindex) ≤ 1
-            return 0
-        end
-        return max(0, getinvmax(encoding, newindex) - 2getinvmin(encoding, newindex))
-    end
+    max(0, getinvmin(encoding, index) - getinvmax(encoding, index))
 end
 
 evaluate(model::AgentModel, encoding::Encoding) = simulateone(model.item, model.period, encoding)

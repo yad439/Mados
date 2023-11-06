@@ -28,18 +28,18 @@ end
     model = AgentModel(item, 10, 0.95, 0.9)
 
     @test @inferred(variable_count(model)) == 5
-    @test @inferred(fastconstraint_count(model)) == 4
+    @test @inferred(fastconstraint_count(model)) == 2
     @test @inferred(slowconstraint_count(model)) == 2
     @test @inferred(bounds(model)) == [(0, 12), (0, 5), (0, 5), (0, 7), (0, 7)]
 
-    @test @inferred(fastconstraints(model, Encoding([3, 5, 4, 1, 6]))) == [2, 0, 0, 4]
-    @test @inferred(fastconstraints(model, Encoding([3, 0, 1, 0, 0]))) == [0, 0, 0, 0]
-    @test @inferred(fastconstraints(model, Encoding([3, 0, 2, 1, 2]))) == [0, 0, 2, 0]
+    @test @inferred(fastconstraints(model, Encoding([3, 5, 4, 9, 6]))) == [1, 3]
+    @test @inferred(fastconstraints(model, Encoding([3, 0, 1, 0, 0]))) == [0, 0]
+    @test @inferred(fastconstraints(model, Encoding([3, 0, 2, 2, 2]))) == [0, 0]
 
-    result1 = @inferred evaluate(model, Encoding([20, 1, 10, 1, 10]))
+    result1 = @inferred evaluate(model, Encoding([20, 2, 10, 2, 10]))
     @test @inferred(objectivevalue(model, result1)) == 13(((1 * 10 + 9 * 5) + (2 * 10 + 8 * 3)) + 10 * 20)
     @test @inferred(slowconstraints(model, result1)) == [0, 0]
 
-    result2 = @inferred evaluate(model, Encoding([5, 0, 3, 0, 3]))
+    result2 = @inferred evaluate(model, Encoding([5, 1, 3, 1, 3]))
     @test @inferred(slowconstraints(model, result2)) ≈ [0.95 - (3 + 3) / (5 + 7), 0.9 - 5 / 12]
 end
