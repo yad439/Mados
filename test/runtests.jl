@@ -9,4 +9,5 @@ using Mados
     @testset "Inventory model" include("inventorymodel.jl")
     @testset "Instance generator" include("instancegenerator.jl")
     @testset "Initial solution" include("initial.jl")
+    @testset "Exhausive search" include("exhausive.jl")
 end
