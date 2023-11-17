@@ -15,18 +15,21 @@ using Mados: generate_allcombinations, calculate_combinationcount, ProductIterat
     item4 = AgentModel(Item(1, 1, [1, 1, 1], [[(1, 10)], [(1, 15)], [(1, 21)]]), 1, 0.0, 0.0)
     result4 = @inferred generate_allcombinations(item4)
     # @test_broken eltype(result4) == Encoding
-    @test length(result4) == calculate_combinationcount([10 + 15 + 21, 10, 15, 21])
+    @test length(result4) == calculate_combinationcount([10, 15, 21])
 end
 
 @testset "calculate_combinationcount" begin
+    @test @inferred(calculate_combinationcount([0])) == 1
     @test @inferred(calculate_combinationcount([0, 0])) == 1
-    @test @inferred(calculate_combinationcount([0, 1])) == 3
-    @test @inferred(calculate_combinationcount([0, 2])) == 6
-    @test @inferred(calculate_combinationcount([0, 3])) == 10
-    @test @inferred(calculate_combinationcount(Int16[6, 3])) == 7 * 10
-    @test @inferred(calculate_combinationcount([6, 3, 2])) == 7 * 10 * 6
+    @test @inferred(calculate_combinationcount([1])) == 2 * 3
+    @test @inferred(calculate_combinationcount([0, 1])) == 2 * 3
+    @test @inferred(calculate_combinationcount([2])) == 3 * 6
+    @test @inferred(calculate_combinationcount([3])) == 4 * 10
+    @test @inferred(calculate_combinationcount(Int16[6, 3])) == 10 * 28 * 10
+    @test @inferred(calculate_combinationcount([6, 3, 2])) == 12 * 28 * 10 * 6
     @test @inferred(calculate_combinationcount([1000, 10000, 10000, 10000, 1000])) == typemax(Int)
-    @test @inferred(calculate_combinationcount(Int8[120, 120])) == 121 * 7381
+    @test @inferred(calculate_combinationcount(Int8[120])) == 121 * 7381
+    @test @inferred(calculate_combinationcount(Int8[120, 120])) == 241 * 7381 * 7381
 end
 
 @testset "ProductIterator" begin

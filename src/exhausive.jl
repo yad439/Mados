@@ -22,9 +22,9 @@ function _concatencoding(parts::AbstractVector{Tuple{T,T}}) where {T<:Integer}
     result
 end
 
-calculate_combinationcount(bounds::AbstractVector{<:Integer}) =
+calculate_combinationcount(demands::AbstractVector{<:Integer}) =
     try
-        Base.checked_mul(first(bounds) + 1, mapreduce(i -> (i + 1) * (i + 2) ÷ 2, Base.checked_mul, @view bounds[begin+1:end]))
+        Base.checked_mul(sum(demands) + 1, mapreduce(i -> (i + 1) * (i + 2) ÷ 2, Base.checked_mul, demands))
     catch e
         e isa OverflowError ? typemax(Int) : rethrow()
     end
