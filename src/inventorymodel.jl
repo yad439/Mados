@@ -18,7 +18,7 @@ struct AgentModel <: AbstractModel
     target_central::Float64
     demands::Vector{Int16}
 end
-AgentModel(item::Item, period::Integer, target_local::AbstractFloat, target_central::AbstractFloat) =
+AgentModel(item::Item, period::Integer, target_local::Real, target_central::Real) =
     AgentModel(item, period, target_local, target_central, [sum(r -> r[2], unit) for unit ∈ item.orders])
 
 agentmodels(model::InventoryModel) =

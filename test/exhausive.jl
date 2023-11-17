@@ -1,4 +1,22 @@
-using Mados: calculate_combinationcount, ProductIterator
+using Mados: generate_allcombinations, calculate_combinationcount, ProductIterator
+
+@testset "generate_allcombinations" begin
+    _unwrap(x::Encoding) = x.encoding
+    item0 = AgentModel(Item(1, 1, [1], [[(1, 0)]]), 1, 0.0, 0.0)
+    @test [_unwrap(x) for x ∈ @inferred(generate_allcombinations(item0))] == [[0, 0, 0]]
+    item1 = AgentModel(Item(1, 1, [1, 1], [[(1, 0)], [(1, 0)]]), 1, 0.0, 0.0)
+    @test [_unwrap(x) for x ∈ @inferred(generate_allcombinations(item1))] == [[0, 0, 0, 0, 0]]
+    item2 = AgentModel(Item(1, 1, [1], [[(1, 1)]]), 1, 0.0, 0.0)
+    @test Set([_unwrap(x) for x ∈ @inferred(generate_allcombinations(item2))]) == Set([[0, 0, 0], [0, 0, 1], [0, 1, 1], [1, 0, 0], [1, 0, 1], [1, 1, 1]])
+    item3 = AgentModel(Item(1, 1, [1, 1], [[(1, 2)], [(1, 5)]]), 1, 0.0, 0.0)
+    result3 = collect(@inferred(generate_allcombinations(item3)))
+    @test typeof(result3) == Vector{Encoding}
+    @test length(result3) == 6 * 21 * 8
+    item4 = AgentModel(Item(1, 1, [1, 1, 1], [[(1, 10)], [(1, 15)], [(1, 21)]]), 1, 0.0, 0.0)
+    result4 = @inferred generate_allcombinations(item4)
+    # @test_broken eltype(result4) == Encoding
+    @test length(result4) == calculate_combinationcount([10 + 15 + 21, 10, 15, 21])
+end
 
 @testset "calculate_combinationcount" begin
     @test @inferred(calculate_combinationcount([0, 0])) == 1
