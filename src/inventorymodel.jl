@@ -31,6 +31,7 @@ slowconstraint_count(model::AgentModel) = 2
 lowerbounds(::AgentModel, _)::Int16 = 0
 upperbounds(model::AgentModel, index::Integer)::Int16 = index == 1 ? sum(model.demands) : model.demands[index÷2]
 bounds(model::AgentModel, index::Integer) = (lowerbounds(model, index), upperbounds(model, index))
+getdemands(model::AgentModel) = model.demands
 
 function fastconstraints(::AgentModel, encoding::Encoding, index::Integer)::Int16
     if !checkindex(Bool, 1:nlocal(encoding), index)

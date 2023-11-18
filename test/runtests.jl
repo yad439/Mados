@@ -10,4 +10,5 @@ using Mados
     @testset "Instance generator" include("instancegenerator.jl")
     @testset "Initial solution" include("initial.jl")
     @testset "Exhausive search" include("exhausive.jl")
+    @testset "MIP" include("mip.jl")
 end
